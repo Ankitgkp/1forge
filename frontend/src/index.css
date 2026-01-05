@@ -1,24 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .font-serif {
+    font-family: 'Newsreader', serif;
+    font-feature-settings: "kern", "liga";
+  }
+}
+
 @keyframes loading {
-    0% {
-        transform: translateX(-150%);
-    }
-    50% {
-         transform: translateX(-60%);
-    }
-    100% {
-        transform: translateX(150%);
-    }
+  0% {
+    transform: translateX(-150%);
+  }
+
+  50% {
+    transform: translateX(-60%);
+  }
+
+  100% {
+    transform: translateX(150%);
+  }
 }
 
 @keyframes shimmer {
-    0% {
-        transform: translateX(-150%) skewX(-12deg);
-    }
-    100% {
-        transform: translateX(150%) skewX(-12deg);
-    }
+  0% {
+    transform: translateX(-150%) skewX(-12deg);
+  }
+
+  100% {
+    transform: translateX(150%) skewX(-12deg);
+  }
 }
