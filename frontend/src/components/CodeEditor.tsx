@@ -24,9 +24,11 @@ export function CodeEditor({ file }: CodeEditorProps) {
     const ext = filename.split('.').pop()?.toLowerCase();
     switch (ext) {
       case 'js':
+        return 'javascript';
       case 'jsx':
         return 'javascript';
       case 'ts':
+        return 'typescript';
       case 'tsx':
         return 'typescript';
       case 'html':
@@ -68,6 +70,26 @@ export function CodeEditor({ file }: CodeEditorProps) {
             monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
               noSemanticValidation: true,
               noSyntaxValidation: true,
+            });
+            monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+              target: monaco.languages.typescript.ScriptTarget.ESNext,
+              allowNonTsExtensions: true,
+              moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+              module: monaco.languages.typescript.ModuleKind.ESNext,
+              noEmit: true,
+              jsx: monaco.languages.typescript.JsxEmit.React,
+              allowJs: true,
+              checkJs: false,
+            });
+            monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+              target: monaco.languages.typescript.ScriptTarget.ESNext,
+              allowNonTsExtensions: true,
+              moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+              module: monaco.languages.typescript.ModuleKind.ESNext,
+              noEmit: true,
+              jsx: monaco.languages.typescript.JsxEmit.React,
+              allowJs: true,
+              checkJs: false,
             });
           }}
           options={{

@@ -12,7 +12,6 @@ import { parseXml } from "../steps";
 import useWebContainer from "../hooks/useWebContainer";
 import { Loader } from "../components/Loader";
 
-
 export function Builder() {
   const location = useLocation();
   const { prompt } = location.state as { prompt: string };
@@ -35,12 +34,17 @@ export function Builder() {
 
   useEffect(() => {
     if (!prompt) {
-      navigate('/');
+      navigate("/");
     }
   }, [prompt, navigate]);
 
   useEffect(() => {
-    console.log("Builder useEffect: steps=", steps.length, "files=", files.length);
+    console.log(
+      "Builder useEffect: steps=",
+      steps.length,
+      "files=",
+      files.length
+    );
     let updateHappened = false;
     const pendingSteps = steps.filter(({ status }) => status === "pending");
     console.log("Pending steps:", pendingSteps.length);
@@ -51,51 +55,62 @@ export function Builder() {
 
       pendingSteps.forEach((step) => {
         console.log("Processing step:", step.type, step.path);
-        // Relaxed check for path presence
         if (step?.type === StepType.CreateFile && step.path) {
-          const pathParts = step.path.split("/").filter(p => p !== "");
+          const pathParts = step.path.split("/").filter((p) => p !== "");
           console.log("Path parts:", pathParts);
 
-          const updateFileStructure = (nodes: FileItem[], parts: string[]): FileItem[] => {
+          const updateFileStructure = (
+            nodes: FileItem[],
+            parts: string[]
+          ): FileItem[] => {
             if (parts.length === 0) return nodes;
 
             const [currentPart, ...remainingParts] = parts;
-            // Actually, calculating path correctly:
             const isLastPart = remainingParts.length === 0;
 
-            const existingNodeIndex = nodes.findIndex(node => node.name === currentPart);
+            const existingNodeIndex = nodes.findIndex(
+              (node) => node.name === currentPart
+            );
 
             if (existingNodeIndex !== -1) {
               const existingNode = nodes[existingNodeIndex];
               if (isLastPart) {
-                // Update file content
-                const updatedNodes = [...nodes];
-                updatedNodes[existingNodeIndex] = { ...existingNode, content: step.code };
-                return updatedNodes;
-              } else {
-                // Recursively update folder
                 const updatedNodes = [...nodes];
                 updatedNodes[existingNodeIndex] = {
                   ...existingNode,
-                  children: updateFileStructure(existingNode.children || [], remainingParts)
+                  content: step.code,
+                };
+                return updatedNodes;
+              } else {
+                const updatedNodes = [...nodes];
+                updatedNodes[existingNodeIndex] = {
+                  ...existingNode,
+                  children: updateFileStructure(
+                    existingNode.children || [],
+                    remainingParts
+                  ),
                 };
                 return updatedNodes;
               }
             } else {
-              // Create new node
               if (isLastPart) {
-                return [...nodes, {
-                  name: currentPart,
-                  type: "file",
-                  path: `/${pathParts.join('/')}`,
-                  content: step.code
-                }];
+                return [
+                  ...nodes,
+                  {
+                    name: currentPart,
+                    type: "file",
+                    path: `/${pathParts.join("/")}`,
+                    content: step.code,
+                  },
+                ];
               } else {
                 const newFolder: FileItem = {
                   name: currentPart,
                   type: "folder",
-                  path: `/${pathParts.slice(0, pathParts.indexOf(currentPart) + 1).join('/')}`,
-                  children: []
+                  path: `/${pathParts
+                    .slice(0, pathParts.indexOf(currentPart) + 1)
+                    .join("/")}`,
+                  children: [],
                 };
                 newFolder.children = updateFileStructure([], remainingParts);
                 return [...nodes, newFolder];
@@ -109,9 +124,10 @@ export function Builder() {
       console.log("Setting new files, count:", newFiles.length);
 
       setFiles(newFiles);
-      setSteps((s) => s.map(step => ({ ...step, status: "completed" as "completed" })));
+      setSteps((s) =>
+        s.map((step) => ({ ...step, status: "completed" as "completed" }))
+      );
 
-      // Update selectedFile if it's the one being modified
       if (selectedFile) {
         const findFile = (nodes: FileItem[], path: string): FileItem | null => {
           for (const node of nodes) {
@@ -125,7 +141,10 @@ export function Builder() {
         };
 
         const updatedSelectedFile = findFile(newFiles, selectedFile.path);
-        if (updatedSelectedFile && updatedSelectedFile.content !== selectedFile.content) {
+        if (
+          updatedSelectedFile &&
+          updatedSelectedFile.content !== selectedFile.content
+        ) {
           setSelectedFile(updatedSelectedFile);
         }
       }
@@ -142,11 +161,11 @@ export function Builder() {
           mountStructure[file.name] = {
             directory: file.children
               ? Object.fromEntries(
-                file.children.map((child) => [
-                  child.name,
-                  processFile(child, false),
-                ])
-              )
+                  file.children.map((child) => [
+                    child.name,
+                    processFile(child, false),
+                  ])
+                )
               : {},
           };
         } else if (file.type === "file") {
@@ -157,7 +176,6 @@ export function Builder() {
               },
             };
           } else {
-            // For files, create a file entry with contents
             return {
               file: {
                 contents: file.content || "",
@@ -169,7 +187,6 @@ export function Builder() {
         return mountStructure[file.name];
       };
 
-      // Process each top-level file/folder
       files.forEach((file) => processFile(file, true));
 
       return mountStructure;
@@ -177,7 +194,6 @@ export function Builder() {
 
     const mountStructure = createMountStructure(files);
 
-    // Mount the structure if WebContainer is available
     console.log(mountStructure);
     webcontainer?.mount(mountStructure);
   }, [files, webcontainer]);
@@ -234,9 +250,12 @@ export function Builder() {
         }));
 
         setSteps((s) => {
-          // Simple merge: replace old parsed steps with new ones
-          // but preserve already completed status if any (though here they start as pending)
-          const baseSteps = s.filter(step => !newSteps.some(ns => ns.path === step.path && ns.type === step.type));
+          const baseSteps = s.filter(
+            (step) =>
+              !newSteps.some(
+                (ns) => ns.path === step.path && ns.type === step.type
+              )
+          );
           return [...baseSteps, ...newSteps];
         });
       }
@@ -272,7 +291,9 @@ export function Builder() {
           <h1 className="text-lg font-bold text-gray-100 flex items-center gap-2">
             <span className="text-blue-400">bolt</span>
             <span className="opacity-50 text-sm font-normal">/</span>
-            <span className="text-sm font-normal text-gray-400 truncate max-w-[300px]">{prompt}</span>
+            <span className="text-sm font-normal text-gray-400 truncate max-w-[300px]">
+              {prompt}
+            </span>
           </h1>
         </div>
         <div className="flex items-center gap-4">
@@ -287,7 +308,6 @@ export function Builder() {
 
       <div className="flex-1 overflow-hidden">
         <div className="h-full grid grid-cols-6 gap-0">
-          {/* Left Sidebar: Steps */}
           <div className="col-span-2 border-r border-[#333] bg-[#1a1a1a] flex flex-col min-h-0">
             <div className="flex-1 overflow-auto p-4">
               <StepsList
@@ -295,10 +315,13 @@ export function Builder() {
                 currentStep={currentStep}
                 onStepClick={setCurrentStep}
               />
-              {(loading || !templateSet) && <div className="mt-4"><Loader /></div>}
+              {(loading || !templateSet) && (
+                <div className="mt-4">
+                  <Loader />
+                </div>
+              )}
             </div>
 
-            {/* Input Area */}
             <div className="p-4 border-t border-[#333] bg-[#1e1e1e] flex-shrink-0">
               <div className="relative">
                 <textarea
@@ -345,7 +368,13 @@ export function Builder() {
                         }));
 
                         setSteps((s) => {
-                          const baseSteps = s.filter(step => !newSteps.some(ns => ns.path === step.path && ns.type === step.type));
+                          const baseSteps = s.filter(
+                            (step) =>
+                              !newSteps.some(
+                                (ns) =>
+                                  ns.path === step.path && ns.type === step.type
+                              )
+                          );
                           return [...baseSteps, ...newSteps];
                         });
                       }
@@ -363,8 +392,18 @@ export function Builder() {
                     }}
                     className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white p-1.5 rounded-md transition-colors"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 10l7-7m0 0l7 7m-7-7v18"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -372,7 +411,6 @@ export function Builder() {
             </div>
           </div>
 
-          {/* Right Area: Explorer + Editor/Preview */}
           <div className="col-span-4 flex flex-col bg-[#1e1e1e] min-h-0">
             <div className="flex-1 flex overflow-hidden">
               {activeTab === "code" ? (

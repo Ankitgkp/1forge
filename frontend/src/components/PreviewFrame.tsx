@@ -1,5 +1,5 @@
 import { WebContainer } from '@webcontainer/api';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Loader2 } from 'lucide-react';
 
 interface PreviewFrameProps {
@@ -7,18 +7,16 @@ interface PreviewFrameProps {
   webContainer?: WebContainer;
 }
 
-// Simple hash function for comparing package.json content
 function simpleHash(str: string): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
+    hash = hash & hash; 
   }
   return hash.toString(36);
 }
 
-// Find a file by name in the file tree
 function findFileByName(files: any[], name: string): any | null {
   for (const file of files) {
     if (file.name === name && file.type === 'file') {
@@ -32,15 +30,15 @@ function findFileByName(files: any[], name: string): any | null {
   return null;
 }
 
-export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
-  const [url, setUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [status, setStatus] = useState("Initializing...");
+let globalDevServerRunning = false;
+let globalServerUrl = '';
+let globalServerListenerAdded = false;
+let globalInstalledPackageHash: string | null = null;
 
-  // Persistent refs to track state across file changes
-  const installedPackageHashRef = useRef<string | null>(null);
-  const devServerRunningRef = useRef(false);
-  const serverReadyListenerAddedRef = useRef(false);
+export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
+  const [url, setUrl] = useState(globalServerUrl);
+  const [isLoading, setIsLoading] = useState(!globalServerUrl);
+  const [status, setStatus] = useState(globalServerUrl ? "Ready" : "Initializing...");
   const initializingRef = useRef(false);
 
   const getPackageJsonHash = useCallback((files: any[]): string | null => {
@@ -49,9 +47,16 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
   }, []);
 
   async function main() {
-    // Prevent multiple simultaneous initializations
     if (initializingRef.current) {
       console.log('[Preview] Already initializing, skipping...');
+      return;
+    }
+
+    if (globalDevServerRunning && globalServerUrl) {
+      console.log('[Preview] Dev server already running, using existing URL');
+      setUrl(globalServerUrl);
+      setIsLoading(false);
+      setStatus("Ready (HMR active)");
       return;
     }
 
@@ -59,10 +64,10 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
       initializingRef.current = true;
 
       const currentPackageHash = getPackageJsonHash(files);
-      const needsInstall = currentPackageHash !== installedPackageHashRef.current;
+      const needsInstall = currentPackageHash !== globalInstalledPackageHash;
 
       console.log('[Preview] Package hash:', currentPackageHash);
-      console.log('[Preview] Previous hash:', installedPackageHashRef.current);
+      console.log('[Preview] Previous hash:', globalInstalledPackageHash);
       console.log('[Preview] Needs install:', needsInstall);
 
       if (needsInstall) {
@@ -87,29 +92,29 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
         }
 
         console.log('[Preview] Dependencies installed successfully');
-        installedPackageHashRef.current = currentPackageHash;
+        globalInstalledPackageHash = currentPackageHash;
       } else {
         console.log('[Preview] Skipping npm install - dependencies unchanged');
         setStatus("Dependencies up to date");
       }
 
-      // Set up server-ready listener only once
-      if (!serverReadyListenerAddedRef.current) {
+      if (!globalServerListenerAdded) {
         webContainer!.on('server-ready', (port, serverUrl) => {
           console.log('[Preview] Server ready on port:', port);
           console.log('[Preview] Server URL:', serverUrl);
+          globalServerUrl = serverUrl;
+          globalDevServerRunning = true;
           setUrl(serverUrl);
           setIsLoading(false);
           setStatus("Ready");
-          devServerRunningRef.current = true;
         });
-        serverReadyListenerAddedRef.current = true;
+        globalServerListenerAdded = true;
       }
 
-      // Only start dev server if not already running
-      if (!devServerRunningRef.current) {
+      if (!globalDevServerRunning) {
         setStatus("Starting dev server...");
         console.log('[Preview] Starting dev server...');
+        
         const devProcess = await webContainer!.spawn('npm', ['run', 'dev']);
 
         devProcess.output.pipeTo(new WritableStream({
@@ -118,9 +123,9 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
           }
         }));
 
-        // Note: devServerRunningRef will be set to true when server-ready fires
       } else {
         console.log('[Preview] Dev server already running - HMR will handle updates');
+        setUrl(globalServerUrl);
         setIsLoading(false);
         setStatus("Ready (HMR active)");
       }
@@ -138,6 +143,56 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
       main();
     }
   }, [webContainer]);
+
+  useEffect(() => {
+    async function checkAndInstallDeps() {
+      if (!webContainer || files.length === 0) return;
+      
+      const currentPackageHash = getPackageJsonHash(files);
+      
+      if (currentPackageHash && currentPackageHash !== globalInstalledPackageHash) {
+        console.log('[Preview] Package.json changed, reinstalling dependencies...');
+        setStatus("Installing new dependencies...");
+        setIsLoading(true);
+        
+        try {
+          const installProcess = await webContainer.spawn('npm', ['install']);
+          
+          installProcess.output.pipeTo(new WritableStream({
+            write(data) {
+              console.log(data);
+            }
+          }));
+          
+          const exitCode = await installProcess.exit;
+          
+          if (exitCode === 0) {
+            console.log('[Preview] New dependencies installed successfully');
+            globalInstalledPackageHash = currentPackageHash;
+            setStatus("Ready (HMR active)");
+          } else {
+            console.error('[Preview] Failed to install new dependencies');
+            setStatus("Installation failed");
+          }
+        } catch (error) {
+          console.error('[Preview] Error installing dependencies:', error);
+        }
+        
+        setIsLoading(false);
+      }
+    }
+    
+    if (globalDevServerRunning) {
+      checkAndInstallDeps();
+    }
+  }, [files, webContainer, getPackageJsonHash]);
+
+  useEffect(() => {
+    if (globalServerUrl && !url) {
+      setUrl(globalServerUrl);
+      setIsLoading(false);
+    }
+  }, [files]);
 
   return (
     <div className="h-full flex items-center justify-center bg-[#1e1e1e]">
@@ -159,7 +214,7 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
             </div>
 
             <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden mt-2">
-              <div className="h-full bg-blue-500 animate-[loading_1.5s_ease-in-out_infinite] rounded-full w-1/2 rounded-full relative overflow-hidden">
+              <div className="h-full bg-blue-500 animate-[loading_1.5s_ease-in-out_infinite] rounded-full w-1/2 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-[shimmer_1s_infinite]"></div>
               </div>
             </div>

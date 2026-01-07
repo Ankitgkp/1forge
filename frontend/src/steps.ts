@@ -1,4 +1,6 @@
 import { Step, StepType } from './types';
+import { fixGeneratedCode } from './utils/codeFixers';
+
 const cache = new Map<string, Step[]>();
 
 export function parseXml(response: string): Step[] {
@@ -33,13 +35,16 @@ export function parseXml(response: string): Step[] {
     const [, type, filePath, content] = match;
 
     if (type === 'file') {
+      // Fix common AI code generation issues (like // comments in JSX)
+      const fixedCode = fixGeneratedCode(content.trim(), filePath);
+      
       steps.push({
         id: stepId++,
         title: `Create ${filePath || 'file'}`,
         description: '',
         type: StepType.CreateFile,
         status: 'pending',
-        code: content.trim(),
+        code: fixedCode,
         path: filePath
       });
     } else if (type === 'shell') {

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Github,
-  ArrowUp
-} from "lucide-react";
+import { Github, ArrowUp } from "lucide-react";
 
 export function Home() {
   const [prompt, setPrompt] = useState("");
@@ -19,26 +16,42 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-[#F2F0E2] text-[#1A1A1A] flex flex-col font-sans overflow-hidden relative">
-      {/* Navbar */}
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-2">
-          <span className="text-xl font-bold tracking-tight text-[#1A1A1A]">bolt.new</span>
+          <span className="text-xl font-bold tracking-tight text-[#1A1A1A]">
+            bolt.new
+          </span>
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-          <a href="#" className="hover:text-black transition-colors">Community</a>
-          <a href="#" className="hover:text-black transition-colors">Enterprise</a>
-          <a href="#" className="hover:text-black transition-colors flex items-center gap-1">
+          <a href="#" className="hover:text-black transition-colors">
+            Community
+          </a>
+          <a href="#" className="hover:text-black transition-colors">
+            Enterprise
+          </a>
+          <a
+            href="#"
+            className="hover:text-black transition-colors flex items-center gap-1"
+          >
             Resources <span className="text-[10px] opacity-75">▼</span>
           </a>
-          <a href="#" className="hover:text-black transition-colors">Careers</a>
-          <a href="#" className="hover:text-black transition-colors">Pricing</a>
+          <a href="#" className="hover:text-black transition-colors">
+            Careers
+          </a>
+          <a href="#" className="hover:text-black transition-colors">
+            Pricing
+          </a>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-3 text-gray-600">
-            <a href="#" className="hover:text-black transition-colors"><Github className="w-5 h-5" /></a>
-            <a href="#" className="hover:text-black transition-colors"><span className="text-lg">𝕏</span></a>
+            <a href="#" className="hover:text-black transition-colors">
+              <Github className="w-5 h-5" />
+            </a>
+            <a href="#" className="hover:text-black transition-colors">
+              <span className="text-lg">𝕏</span>
+            </a>
           </div>
           <button className="hidden md:block text-sm px-4 py-2 hover:bg-black/5 rounded-lg text-gray-700 transition-colors">
             Sign In
@@ -49,33 +62,31 @@ export function Home() {
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center p-4 min-h-[80vh]">
         <div className="max-w-3xl w-full flex flex-col items-center text-center space-y-8">
-
-          {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E5E3D5] border border-[#D6D4C5] text-xs font-medium text-gray-600">
             <span className="font-bold text-gray-800">b²</span>
             <span>Introducing Bolt V2</span>
           </div>
 
-          {/* Hero Text */}
           <div className="space-y-2">
             <h1 className="text-5xl md:text-6xl font-serif text-[#2C2C2C]">
               Good evening, Builder
             </h1>
           </div>
 
-          {/* Input Area */}
           <div className="w-full max-w-2xl mt-8">
-            <form onSubmit={handleSubmit} className="relative bg-white rounded-2xl border border-gray-300 overflow-visible">
+            <form
+              onSubmit={handleSubmit}
+              className="relative bg-white rounded-2xl border border-gray-300 overflow-visible"
+            >
               <div className="p-4">
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="Type / for commands"
                   className="w-full h-16 bg-transparent text-gray-800 placeholder-gray-400 resize-none outline-none text-lg font-light font-serif"
-                  style={{ minHeight: '4rem' }}
+                  style={{ minHeight: "4rem" }}
                 />
               </div>
 
@@ -94,13 +105,25 @@ export function Home() {
                     {showModelMenu && (
                       <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg overflow-hidden z-50">
                         <div className="p-1">
-                          <button type="button" className="w-full flex items-center justify-between px-3 py-2 text-sm text-left text-gray-600 hover:bg-gray-50 rounded-md transition-colors opacity-50 cursor-not-allowed" disabled>
+                          <button
+                            type="button"
+                            className="w-full flex items-center justify-between px-3 py-2 text-sm text-left text-gray-600 hover:bg-gray-50 rounded-md transition-colors opacity-50 cursor-not-allowed"
+                            disabled
+                          >
                             <span>Claude</span>
-                            <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Soon</span>
+                            <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">
+                              Soon
+                            </span>
                           </button>
-                          <button type="button" className="w-full flex items-center justify-between px-3 py-2 text-sm text-left text-gray-600 hover:bg-gray-50 rounded-md transition-colors opacity-50 cursor-not-allowed" disabled>
+                          <button
+                            type="button"
+                            className="w-full flex items-center justify-between px-3 py-2 text-sm text-left text-gray-600 hover:bg-gray-50 rounded-md transition-colors opacity-50 cursor-not-allowed"
+                            disabled
+                          >
                             <span>Gemini</span>
-                            <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Soon</span>
+                            <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">
+                              Soon
+                            </span>
                           </button>
                         </div>
                       </div>
@@ -120,17 +143,13 @@ export function Home() {
               </div>
             </form>
           </div>
-
-          {/* Import Options */}
           <div className="flex items-center gap-2 text-sm text-gray-500 mt-6">
             <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-black/5 transition-colors text-gray-500">
               <Github className="w-4 h-4" /> Import from GitHub
             </button>
           </div>
-
         </div>
       </main>
-
     </div>
   );
 }
