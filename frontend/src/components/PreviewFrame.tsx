@@ -116,7 +116,7 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
       }
 
       if (!globalDevServerRunning) {
-        setStatus("Starting dev server...");
+        setStatus("Starting dev server... it may take up to 3 to 5 minutes");
         console.log('[Preview] Starting dev server...');
         
         const devProcess = await webContainer!.spawn('npm', ['run', 'dev']);
@@ -210,7 +210,7 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
 
             <div className="w-full space-y-2">
               <h3 className="text-lg font-medium text-gray-200">
-                Initializing Preview
+                Initializing Preview Beta
               </h3>
               <p className="text-sm text-gray-400">
                 {status}
