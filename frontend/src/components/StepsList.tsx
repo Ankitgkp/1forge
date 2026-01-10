@@ -4,6 +4,7 @@
 
 import { CheckCircle, Circle, FileText, Terminal, Loader2 } from 'lucide-react';
 import { Step, StepType } from '../types';
+import { useEffect, useRef } from 'react';
 
 interface StepsListProps {
   steps: Step[];
@@ -12,6 +13,16 @@ interface StepsListProps {
 }
 
 export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const lastStepRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to the latest step
+  useEffect(() => {
+    if (lastStepRef.current && scrollContainerRef.current) {
+      lastStepRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [steps.length]);
+
   return (
     <div className="h-full flex flex-col bg-[#0a0a0a]">
       <div className="px-4 py-4 border-b border-gray-800">
@@ -22,16 +33,18 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
           Follow the progress of your build
         </p>
       </div>
-      <div className="flex-1 overflow-auto p-3 space-y-2">
+      <div ref={scrollContainerRef} className="flex-1 overflow-auto p-3 space-y-2">
         {steps.map((step, index) => {
           const isCurrent = currentStep === step.id;
           const isCompleted = step.status === 'completed';
           const isInProgress = step.status === 'in-progress';
           const uniqueKey = step.path ? `${step.type}-${step.path}` : `${step.type}-${index}`;
+          const isLastStep = index === steps.length - 1;
 
           return (
             <div
               key={uniqueKey}
+              ref={isLastStep ? lastStepRef : null}
               className={`group relative flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 border ${isCurrent
                 ? 'bg-[#1a1a1a] border-gray-700'
                 : 'bg-[#0d0d0d] border-gray-800 hover:border-gray-700 hover:bg-[#1a1a1a]'

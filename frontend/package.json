@@ -24,6 +24,7 @@
     "clsx": "^2.1.1",
     "events": "^3.3.0",
     "framer-motion": "^12.23.26",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "lucide-react": "^0.344.0",
     "motion": "^12.25.0",

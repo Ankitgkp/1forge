@@ -40,6 +40,10 @@ export function Builder() {
 
     useWebContainerMount(files, webcontainer);
 
+    // Check if code generation is complete
+    const isGenerating = loading || !templateSet;
+    const allStepsCompleted = steps.length > 0 && steps.every(step => step.status === 'completed');
+
     useEffect(() => {
         if (!prompt) {
             navigate("/");
@@ -53,8 +57,8 @@ export function Builder() {
 
     return (
         <div className="h-screen bg-black flex flex-col overflow-hidden bg-noise">
-            <BuilderHeader subtitle={prompt}>
-                <TabView activeTab={activeTab} onTabChange={setActiveTab} />
+            <BuilderHeader subtitle={prompt} files={files} isGenerating={isGenerating}>
+                <TabView activeTab={activeTab} onTabChange={setActiveTab} disabled={!allStepsCompleted} />
             </BuilderHeader>
 
             <div className="flex-1 overflow-hidden">
