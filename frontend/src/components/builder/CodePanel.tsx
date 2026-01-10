@@ -13,14 +13,14 @@ interface CodePanelProps {
 export function CodePanel({ files, selectedFile, onFileSelect }: CodePanelProps) {
     return (
         <>
-            <div className="w-64 flex-shrink-0 border-r border-[#333]">
+            <div className="w-56 flex-shrink-0 border-r border-gray-800 bg-[#0a0a0a]">
                 <FileExplorer
                     files={files}
                     onFileSelect={onFileSelect}
                     selectedFile={selectedFile}
                 />
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden bg-[#0d0d0d]">
                 <CodeEditor file={selectedFile} />
             </div>
         </>

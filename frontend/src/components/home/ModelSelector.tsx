@@ -10,7 +10,7 @@ export function ModelSelector({ selectedModel }: ModelSelectorProps) {
     const trigger = (
         <button
             type="button"
-            className="flex items-center gap-2 px-2 py-1.5 text-xs font-medium text-gray-500 hover:bg-gray-50 rounded-md transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-gray-300 bg-[#2a2a2a] hover:bg-[#333] rounded-full transition-colors"
         >
             <span>{selectedModel}</span>
             <span className="text-[10px] opacity-75">▼</span>
