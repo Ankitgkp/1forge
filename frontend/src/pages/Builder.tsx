@@ -32,6 +32,7 @@ export function Builder() {
     const [currentStep, setCurrentStep] = useState(1);
     const [activeTab, setActiveTab] = useState<"code" | "preview">("code");
     const [steps, setSteps] = useState<Step[]>([]);
+    const [hasAutoSwitched, setHasAutoSwitched] = useState(false);
 
     const webcontainer = useWebContainer();
     const { files, selectedFile, setSelectedFile } = useFileManager(steps, setSteps);
@@ -40,7 +41,6 @@ export function Builder() {
 
     useWebContainerMount(files, webcontainer);
 
-    // Check if code generation is complete
     const isGenerating = loading || !templateSet;
     const allStepsCompleted = steps.length > 0 && steps.every(step => step.status === 'completed');
 
@@ -50,19 +50,18 @@ export function Builder() {
         }
     }, [prompt, navigate]);
 
-    // Auto-switch to code tab when generation starts
     useEffect(() => {
         if (isGenerating && activeTab === 'preview') {
             setActiveTab('code');
         }
     }, [isGenerating, activeTab]);
 
-    // Auto-switch to preview tab when code generation completes
     useEffect(() => {
-        if (allStepsCompleted && !isGenerating && activeTab === 'code') {
+        if (allStepsCompleted && !isGenerating && activeTab === 'code' && !hasAutoSwitched) {
             setActiveTab('preview');
+            setHasAutoSwitched(true);
         }
-    }, [allStepsCompleted, isGenerating, activeTab]);
+    }, [allStepsCompleted, isGenerating, activeTab, hasAutoSwitched]);
 
     async function handleChatSubmit() {
         await sendMessage(userPrompt);
@@ -72,7 +71,7 @@ export function Builder() {
     return (
         <div className="h-screen bg-black flex flex-col overflow-hidden bg-noise">
             <BuilderHeader subtitle={prompt} files={files} isGenerating={isGenerating}>
-                <TabView activeTab={activeTab} onTabChange={setActiveTab} disabled={!allStepsCompleted} />
+                <TabView activeTab={activeTab} onTabChange={setActiveTab} disabled={isGenerating} />
             </BuilderHeader>
 
             <div className="flex-1 overflow-hidden">
