@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 1forge - AI-Powered Web Builder
+# 1forge - AI-Powered Web Builder
 
 ### Transform ideas into reality with AI-driven web development
 
