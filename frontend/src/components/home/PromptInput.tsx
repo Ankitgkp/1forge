@@ -1,46 +1,42 @@
 // prompt input box form
 
-import { FormEvent } from 'react';
-import { ArrowUp } from 'lucide-react';
-import { Textarea, IconButton, Card, CardContent, CardFooter } from '../ui';
-import { ModelSelector } from './ModelSelector';
+import { FormEvent } from "react";
+import { ChevronRight } from "lucide-react";
+import { ModelSelector } from "./ModelSelector";
 
 interface PromptInputProps {
-    value: string;
-    onChange: (value: string) => void;
-    onSubmit: (e: FormEvent) => void;
+  value: string;
+  onChange: (value: string) => void;
+  onSubmit: (e: FormEvent) => void;
 }
 
 export function PromptInput({ value, onChange, onSubmit }: PromptInputProps) {
-    return (
-        <Card className="overflow-visible">
-            <form onSubmit={onSubmit}>
-                <CardContent>
-                    <Textarea
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        placeholder="Type / for commands"
-                        className="h-16 text-lg font-light font-serif"
-                        style={{ minHeight: '4rem' }}
-                    />
-                </CardContent>
-                <CardFooter className="flex items-center justify-between">
-                    <ModelSelector selectedModel="Devstral 4.5" />
-                    <SubmitButton disabled={!value.trim()} />
-                </CardFooter>
-            </form>
-        </Card>
-    );
-}
+  return (
+    <div className="w-full bg-[#1a1a1a] rounded-xl border border-gray-800 hover:border-gray-700 transition-colors shadow-xl">
+      <form onSubmit={onSubmit}>
+        <div className="p-4 pb-3">
+          <textarea
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Type your prompt here..."
+            className="w-full bg-transparent text-gray-200 placeholder-gray-500 text-base outline-none resize-none min-h-[60px]"
+            rows={2}
+          />
+        </div>
 
-interface SubmitButtonProps {
-    disabled: boolean;
-}
-
-function SubmitButton({ disabled }: SubmitButtonProps) {
-    return (
-        <IconButton type="submit" disabled={disabled} variant="primary">
-            <ArrowUp className="w-5 h-5" />
-        </IconButton>
-    );
+        <div className="px-4 pb-4 flex items-center justify-between border-gray-800 pt-3">
+          <div className="flex items-center gap-3">
+            <ModelSelector selectedModel="Devstral 4.5" />
+          </div>
+          <button
+            type="submit"
+            disabled={!value.trim()}
+            className="flex items-center justify-center w-9 h-9 bg-white hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed text-black rounded-full transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }

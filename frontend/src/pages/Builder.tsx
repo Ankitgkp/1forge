@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Step } from "../types";
 import { 
-    useWebContainer, 
+    useWebContainer,
     useFileManager, 
-    useWebContainerMount, 
+    useWebContainerMount,
     useLLMChat, 
     useBuilderInit 
 } from "../hooks";
@@ -52,8 +52,8 @@ export function Builder() {
     }
 
     return (
-        <div className="h-screen bg-gray-900 flex flex-col overflow-hidden">
-            <BuilderHeader title="bolt" subtitle={prompt}>
+        <div className="h-screen bg-black flex flex-col overflow-hidden bg-noise">
+            <BuilderHeader subtitle={prompt}>
                 <TabView activeTab={activeTab} onTabChange={setActiveTab} />
             </BuilderHeader>
 

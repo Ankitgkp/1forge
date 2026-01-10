@@ -13,42 +13,43 @@ interface StepsListProps {
 
 export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
   return (
-    <div className="h-full flex flex-col bg-[#1a1a1a]">
-      <div className="px-4 py-4 border-b border-[#333]">
-        <h2 className="text-sm font-semibold text-gray-200">
+    <div className="h-full flex flex-col bg-[#0a0a0a]">
+      <div className="px-4 py-4 border-b border-gray-800">
+        <h2 className="text-sm font-medium text-white">
           Build Steps
         </h2>
         <p className="text-xs text-gray-500 mt-1">
-          Follow the progress of your application build
+          Follow the progress of your build
         </p>
       </div>
-      <div className="flex-1 overflow-auto p-2 space-y-2">
-        {steps.map((step) => {
+      <div className="flex-1 overflow-auto p-3 space-y-2">
+        {steps.map((step, index) => {
           const isCurrent = currentStep === step.id;
           const isCompleted = step.status === 'completed';
           const isInProgress = step.status === 'in-progress';
+          const uniqueKey = step.path ? `${step.type}-${step.path}` : `${step.type}-${index}`;
 
           return (
             <div
-              key={step.id}
+              key={uniqueKey}
               className={`group relative flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 border ${isCurrent
-                ? 'bg-[#252526] border-blue-500/30 ring-1 ring-blue-500/20'
-                : 'bg-[#1e1e1e] border-[#333] hover:border-[#444] hover:bg-[#252526]'
+                ? 'bg-[#1a1a1a] border-gray-700'
+                : 'bg-[#0d0d0d] border-gray-800 hover:border-gray-700 hover:bg-[#1a1a1a]'
                 }`}
               onClick={() => onStepClick(step.id)}
             >
               <div className="flex-shrink-0 mt-0.5">
                 {isCompleted ? (
-                  <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center">
-                    <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+                  <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
+                    <CheckCircle className="w-3.5 h-3.5 text-green-400" />
                   </div>
                 ) : isInProgress ? (
-                  <div className="w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center">
-                    <Loader2 className="w-3.5 h-3.5 text-blue-500 animate-spin" />
+                  <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
+                    <Loader2 className="w-3.5 h-3.5 text-white animate-spin" />
                   </div>
                 ) : (
                   <div className={`w-5 h-5 rounded-full flex items-center justify-center ${isCurrent ? 'bg-gray-700' : 'bg-gray-800'}`}>
-                    <Circle className={`w-3.5 h-3.5 ${isCurrent ? 'text-gray-300' : 'text-gray-600'}`} />
+                    <Circle className={`w-3.5 h-3.5 ${isCurrent ? 'text-gray-400' : 'text-gray-600'}`} />
                   </div>
                 )}
               </div>
@@ -59,7 +60,7 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
                     }`}>
                     {step.title}
                   </h3>
-                  <span className="text-[10px] text-gray-600 font-mono uppercase px-1.5 py-0.5 rounded border border-gray-800 bg-gray-900/50">
+                  <span className="text-[10px] text-gray-500 font-mono px-1.5 py-0.5 rounded bg-gray-800">
                     {step.type === StepType.CreateFile ? 'File' : 'Shell'}
                   </span>
                 </div>
@@ -70,7 +71,7 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
                   </p>
                 )}
                 {step.path && (
-                  <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-500 font-mono bg-black/20 px-2 py-1 rounded w-fit">
+                  <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-500 font-mono bg-black/30 px-2 py-1 rounded-lg w-fit">
                     {step.type === StepType.CreateFile ? (
                       <FileText className="w-3 h-3" />
                     ) : (
