@@ -63,8 +63,8 @@ router.post("/", async (req: Request, res: Response) => {
     } catch (error) {
         console.error('Error in /template:', error);
         res.status(500).json({
-            message: "Internal server error",
-            error: error instanceof Error ? error.message : 'Unknown error'
+            message: "Internal server e",
+            error: error instanceof Error ? error.message : 'Unknown e'
         });
     }
 });
