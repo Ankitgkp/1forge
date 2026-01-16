@@ -96,7 +96,7 @@ export function Home() {
               Made with <span className="text-red-500">❤️</span>
             </span>
             <a
-              href="https://github.com/Ankitgkp"
+              href="https://github.com/Ankitgkp/1forge"
               target="_blank"
               className="flex items-center gap-1.5 px-3 py-1.5 text-white-400 text-xs font-medium rounded-full hover:border-white-400 hover:bg-white-500/10 transition-all duration-200"
             >
