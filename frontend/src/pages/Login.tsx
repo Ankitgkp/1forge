@@ -47,51 +47,46 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-[#0e0e0d] bg-noise">
+      <div className="bg-white/[0.03] border border-white/[0.06] p-8 rounded-2xl shadow-2xl shadow-black/30 w-full max-w-md">
+        <h1 className="text-2xl font-serif italic text-white/80 mb-2 text-center">Welcome back</h1>
+        <p className="text-[13px] text-white/25 text-center mb-8">Sign in to your account</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-[12px] font-medium text-white/40 mb-1.5">Email</label>
             <Input
               type="email"
-              placeholder="Enter your email"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
+              variant="dark"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="block text-[12px] font-medium text-white/40 mb-1.5">Password</label>
             <Input
               type="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
+              variant="dark"
             />
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded">
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400/80 px-4 py-2.5 rounded-xl text-[13px]">
               {error}
             </div>
           )}
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+          <Button type="submit" className="w-full !bg-white/90 !text-[#111110] hover:!bg-white !rounded-xl" disabled={loading}>
+            {loading ? "Signing in..." : "Sign in"}
           </Button>
         </form>
-
-        {/* Signup disabled for now */}
-        {/* <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-600 hover:underline">
-            Sign up
-          </a>
-        </p> */}
       </div>
     </div>
   );
