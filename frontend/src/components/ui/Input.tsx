@@ -10,7 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const variantStyles = {
     default: 'bg-white border-gray-300 text-gray-800 placeholder-gray-400',
-    dark: 'bg-[#252526] border-[#3c3c3c] text-gray-200 placeholder-gray-500'
+    dark: 'bg-white/[0.03] border-white/[0.08] text-white/70 placeholder-white/20 focus:border-white/[0.15]'
 };
 
 export function Input({ 
@@ -18,7 +18,7 @@ export function Input({
     className = '', 
     ...props 
 }: InputProps) {
-    const baseStyles = 'w-full border rounded-lg px-3 py-2 outline-none focus:border-blue-500 transition-colors';
+    const baseStyles = 'w-full border rounded-xl px-3.5 py-2.5 text-[14px] outline-none transition-colors duration-200';
     
     return (
         <input

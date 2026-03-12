@@ -24,12 +24,12 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
   }, [steps.length]);
 
   return (
-    <div className="h-full flex flex-col bg-[#0a0a0a]">
-      <div className="px-4 py-4 border-b border-gray-800">
-        <h2 className="text-sm font-medium text-white">
+    <div className="h-full flex flex-col bg-[#111110]">
+      <div className="px-4 py-4 border-b border-white/[0.06]">
+        <h2 className="text-[13px] font-medium text-white/60">
           Build Steps
         </h2>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-[11px] text-white/20 mt-1">
           Follow the progress of your build
         </p>
       </div>
@@ -46,45 +46,45 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
               key={uniqueKey}
               ref={isLastStep ? lastStepRef : null}
               className={`group relative flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 border ${isCurrent
-                ? 'bg-[#1a1a1a] border-gray-700'
-                : 'bg-[#0d0d0d] border-gray-800 hover:border-gray-700 hover:bg-[#1a1a1a]'
+                ? 'bg-white/[0.04] border-white/[0.08]'
+                : 'bg-transparent border-transparent hover:border-white/[0.06] hover:bg-white/[0.02]'
                 }`}
               onClick={() => onStepClick(step.id)}
             >
               <div className="flex-shrink-0 mt-0.5">
                 {isCompleted ? (
-                  <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <CheckCircle className="w-3.5 h-3.5 text-green-400" />
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                    <CheckCircle className="w-3.5 h-3.5 text-emerald-400/70" />
                   </div>
                 ) : isInProgress ? (
-                  <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
-                    <Loader2 className="w-3.5 h-3.5 text-white animate-spin" />
+                  <div className="w-5 h-5 rounded-full bg-white/[0.06] flex items-center justify-center">
+                    <Loader2 className="w-3.5 h-3.5 text-white/40 animate-spin" />
                   </div>
                 ) : (
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${isCurrent ? 'bg-gray-700' : 'bg-gray-800'}`}>
-                    <Circle className={`w-3.5 h-3.5 ${isCurrent ? 'text-gray-400' : 'text-gray-600'}`} />
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${isCurrent ? 'bg-white/[0.06]' : 'bg-white/[0.03]'}`}>
+                    <Circle className={`w-3.5 h-3.5 ${isCurrent ? 'text-white/30' : 'text-white/15'}`} />
                   </div>
                 )}
               </div>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <h3 className={`text-sm font-medium truncate ${isCurrent || isCompleted ? 'text-gray-200' : 'text-gray-500'
+                  <h3 className={`text-[13px] font-medium truncate ${isCurrent || isCompleted ? 'text-white/60' : 'text-white/25'
                     }`}>
                     {step.title}
                   </h3>
-                  <span className="text-[10px] text-gray-500 font-mono px-1.5 py-0.5 rounded bg-gray-800">
+                  <span className="text-[10px] text-white/20 font-mono px-1.5 py-0.5 rounded bg-white/[0.03]">
                     {step.type === StepType.CreateFile ? 'File' : 'Shell'}
                   </span>
                 </div>
                 {step.description && (
-                  <p className={`text-xs leading-relaxed line-clamp-2 ${isCurrent ? 'text-gray-400' : 'text-gray-600'
+                  <p className={`text-[11px] leading-relaxed line-clamp-2 ${isCurrent ? 'text-white/30' : 'text-white/15'
                     }`}>
                     {step.description}
                   </p>
                 )}
                 {step.path && (
-                  <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-500 font-mono bg-black/30 px-2 py-1 rounded-lg w-fit">
+                  <div className="mt-2 flex items-center gap-1.5 text-[11px] text-white/25 font-mono bg-white/[0.02] px-2 py-1 rounded-lg w-fit">
                     {step.type === StepType.CreateFile ? (
                       <FileText className="w-3 h-3" />
                     ) : (

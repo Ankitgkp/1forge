@@ -38,7 +38,7 @@ export function Dropdown({ trigger, children, className = '' }: DropdownProps) {
                 {trigger}
             </div>
             {isOpen && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-[#2a2a2a] border border-gray-600 rounded-lg shadow-xl">
+                <div className="absolute top-full left-0 mt-2 w-48 bg-[#1c1c1b] border border-white/[0.08] rounded-xl shadow-xl shadow-black/40 backdrop-blur-sm">
                     <div className="p-1" onClick={() => setIsOpen(false)}>
                         {children}
                     </div>
@@ -60,12 +60,12 @@ export function DropdownItem({ children, badge, className = '', ...props }: Drop
     return (
         <button
             type="button"
-            className={`w-full flex items-center justify-between px-3 py-2 text-sm text-left text-gray-200 hover:bg-gray-700 rounded-md transition-colors ${props.disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+            className={`w-full flex items-center justify-between px-3 py-2 text-sm text-left text-white/60 hover:bg-white/[0.06] hover:text-white/80 rounded-lg transition-colors ${props.disabled ? 'opacity-40 cursor-not-allowed' : ''} ${className}`}
             {...props}
         >
             <span>{children}</span>
             {badge && (
-                <span className="text-[10px] bg-gray-700 text-gray-400 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] bg-white/[0.06] text-white/30 px-1.5 py-0.5 rounded">
                     {badge}
                 </span>
             )}

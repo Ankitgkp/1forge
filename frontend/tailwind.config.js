@@ -5,7 +5,8 @@ export default {
   theme: {
   	extend: {
   		fontFamily: {
-  			'display': ['Playfair Display', 'serif'],
+  			'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+  			'display': ['Newsreader', 'Georgia', 'serif'],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

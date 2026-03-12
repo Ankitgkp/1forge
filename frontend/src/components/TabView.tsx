@@ -19,12 +19,13 @@ export function TabView({ activeTab, onTabChange, disabled = false }: TabViewPro
   };
 
   return (
-    <div className="flex items-center bg-[#1a1a1a] rounded-lg p-1 gap-1">
+    <div className="flex items-center bg-white/[0.04] rounded-lg p-0.5 gap-0.5">
       <button
         onClick={() => onTabChange('code')}
-        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors rounded-md ${activeTab === 'code'
-            ? 'bg-white text-black'
-            : 'text-gray-400 hover:text-white hover:bg-gray-800'
+        className={`flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium transition-all duration-200 rounded-md ${
+          activeTab === 'code'
+            ? 'bg-white/90 text-[#111110]'
+            : 'text-white/35 hover:text-white/60 hover:bg-white/[0.04]'
           }`}
       >
         <Code2 className="w-3.5 h-3.5" />
@@ -33,12 +34,12 @@ export function TabView({ activeTab, onTabChange, disabled = false }: TabViewPro
       <button
         onClick={handlePreviewClick}
         disabled={disabled}
-        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors rounded-md ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium transition-all duration-200 rounded-md ${
           disabled 
-            ? 'text-gray-600 cursor-not-allowed opacity-50 bg-gray-900' 
+            ? 'text-white/15 cursor-not-allowed' 
             : activeTab === 'preview'
-            ? 'bg-white text-black'
-            : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            ? 'bg-white/90 text-[#111110]'
+            : 'text-white/35 hover:text-white/60 hover:bg-white/[0.04]'
           }`}
         title={disabled ? 'Wait for code generation to complete' : 'Preview'}
       >

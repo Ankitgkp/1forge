@@ -14,9 +14,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white',
-    secondary: 'bg-black hover:bg-gray-800 text-white',
-    ghost: 'hover:bg-black/5 text-gray-700',
+    primary: 'bg-white/90 hover:bg-white text-[#111110]',
+    secondary: 'bg-white/[0.06] hover:bg-white/[0.1] text-white/70 border border-white/[0.08]',
+    ghost: 'hover:bg-white/[0.04] text-white/50',
     icon: 'flex items-center justify-center'
 };
 
@@ -34,7 +34,7 @@ export function Button({
     children, 
     ...props 
 }: ButtonProps) {
-    const baseStyles = 'rounded-lg font-medium transition-colors disabled:opacity-50';
+    const baseStyles = 'rounded-xl font-medium transition-all duration-200 disabled:opacity-40';
     
     return (
         <button

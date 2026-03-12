@@ -1,7 +1,7 @@
 // prompt input box form
 
 import { FormEvent } from "react";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ModelSelector } from "./ModelSelector";
 
 interface PromptInputProps {
@@ -14,29 +14,29 @@ interface PromptInputProps {
 
 export function PromptInput({ value, onChange, onSubmit, model, onModelChange }: PromptInputProps) {
   return (
-    <div className="w-full bg-[#1a1a1a] rounded-xl border border-gray-800 hover:border-gray-700 transition-colors shadow-xl">
+    <div className="w-full bg-white/[0.03] rounded-2xl border border-white/[0.06] hover:border-white/[0.1] transition-all duration-300 shadow-2xl shadow-black/30">
       <form onSubmit={onSubmit}>
-        <div className="p-4 pb-3">
+        <div className="p-5 pb-3">
           <textarea
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="Type your prompt here..."
-            className="w-full bg-transparent text-gray-200 placeholder-gray-500 text-base outline-none resize-none min-h-[60px]"
+            placeholder="Describe what you want to build..."
+            className="w-full bg-transparent text-white/80 placeholder-white/20 text-[15px] leading-relaxed outline-none resize-none min-h-[64px]"
             rows={2}
           />
         </div>
 
-        <div className="px-4 pb-4 flex items-center justify-between border-gray-800 pt-3">
+        <div className="px-5 pb-4 flex items-center justify-between pt-2">
           <div className="flex items-center gap-3">
             <ModelSelector model={model} setModel={onModelChange} />
-            <span className="text-xs text-gray-500">Free forever</span>
+            <span className="text-[11px] text-white/15">free</span>
           </div>
           <button
             type="submit"
             disabled={!value.trim()}
-            className="flex items-center justify-center w-9 h-9 bg-white hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed text-black rounded-full transition-colors"
+            className="flex items-center justify-center w-9 h-9 bg-white/90 hover:bg-white disabled:opacity-20 disabled:cursor-not-allowed text-[#0e0e0d] rounded-xl transition-all duration-200"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </form>

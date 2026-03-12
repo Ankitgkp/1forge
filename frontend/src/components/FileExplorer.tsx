@@ -35,14 +35,14 @@ function FileNode({ item, depth, onFileClick, selectedFile }: FileNodeProps) {
   return (
     <div className="select-none">
       <div
-        className={`flex items-center gap-2 px-2 py-1.5 hover:bg-gray-800 cursor-pointer transition-colors duration-150 ${isSelected ? 'bg-gray-800 text-white' : 'text-gray-400'
+        className={`flex items-center gap-2 px-2 py-1.5 hover:bg-white/[0.04] cursor-pointer transition-colors duration-150 ${isSelected ? 'bg-white/[0.05] text-white/70' : 'text-white/35'
           }`}
         style={{ paddingLeft: `${depth * 1.2 + 0.5}rem` }}
         onClick={handleClick}
       >
         <span className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
           {item.type === 'folder' && (
-            <span className="text-gray-500">
+            <span className="text-white/20">
               {isExpanded ? (
                 <ChevronDown className="w-3.5 h-3.5" />
               ) : (
@@ -53,12 +53,12 @@ function FileNode({ item, depth, onFileClick, selectedFile }: FileNodeProps) {
         </span>
         <span className="flex-shrink-0">
           {item.type === 'folder' ? (
-            <FolderTree className="w-4 h-4 text-amber-400" />
+            <FolderTree className="w-4 h-4 text-amber-400/60" />
           ) : (
-            <File className="w-4 h-4 text-blue-400" />
+            <File className="w-4 h-4 text-blue-400/50" />
           )}
         </span>
-        <span className="text-sm truncate">{item.name}</span>
+        <span className="text-[13px] truncate">{item.name}</span>
       </div>
       {item.type === 'folder' && isExpanded && item.children && (
         <div className="mt-0.5">
@@ -79,10 +79,10 @@ function FileNode({ item, depth, onFileClick, selectedFile }: FileNodeProps) {
 
 export function FileExplorer({ files, onFileSelect, selectedFile }: FileExplorerProps) {
   return (
-    <div className="bg-[#0a0a0a] h-full overflow-hidden flex flex-col">
-      <div className="px-3 py-3 border-b border-gray-800 flex flex-col gap-2">
+    <div className="bg-[#111110] h-full overflow-hidden flex flex-col">
+      <div className="px-3 py-3 border-b border-white/[0.06] flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-medium text-gray-400 flex items-center gap-1.5">
+          <h2 className="text-[11px] font-medium text-white/30 flex items-center gap-1.5 uppercase tracking-wider">
             <FolderTree className="w-3.5 h-3.5" />
             Files
           </h2>
@@ -91,7 +91,7 @@ export function FileExplorer({ files, onFileSelect, selectedFile }: FileExplorer
           <input
             type="text"
             placeholder="Search files..."
-            className="w-full bg-[#1a1a1a] border border-gray-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-gray-600 transition-colors placeholder-gray-600"
+            className="w-full bg-white/[0.03] border border-white/[0.06] text-white/50 text-[12px] px-2.5 py-1.5 rounded-lg outline-none focus:border-white/[0.12] transition-colors placeholder-white/15"
             readOnly
           />
         </div>
