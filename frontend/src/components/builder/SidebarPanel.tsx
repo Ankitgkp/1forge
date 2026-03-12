@@ -8,7 +8,7 @@ interface SidebarPanelProps {
 
 export function SidebarPanel({ children }: SidebarPanelProps) {
     return (
-        <div className="col-span-2 border-r border-gray-800 bg-[#0a0a0a] flex flex-col min-h-0">
+        <div className="col-span-2 border-r border-white/[0.06] bg-[#111110] flex flex-col min-h-0">
             {children}
         </div>
     );
