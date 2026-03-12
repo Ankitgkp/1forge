@@ -11,7 +11,7 @@ export function Navbar() {
       </div>
 
       <div className="flex items-center gap-4">
-        <span className="text-[11px] text-white/15 font-medium tracking-wide">v0.1</span>
+        <span className="text-[11px] text-white/15 font-medium tracking-wide">v3</span>
       </div>
     </nav>
   );
