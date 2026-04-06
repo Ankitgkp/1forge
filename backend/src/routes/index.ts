@@ -10,6 +10,7 @@ const router = Router();
 
 router.use("/", healthRouter);
 router.use("/template", templateRouter);
+router.use("/send", templateRouter);
 router.use("/chat", chatRouter);
 router.use("/signup", signupRouter);
 router.use("/login", loginRouter);

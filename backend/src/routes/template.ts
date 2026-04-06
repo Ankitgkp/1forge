@@ -62,9 +62,14 @@ router.post("/", async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.error('Error in /template:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const model = req.body?.model || config.aiModel;
+
         res.status(500).json({
-            message: "Internal server e",
-            error: error instanceof Error ? error.message : 'Unknown e'
+            message: "Template generation failed",
+            error: errorMessage,
+            model,
+            hint: "Check OPENROUTER_API_KEY and AI_MODEL. The selected model may be unavailable for your key."
         });
     }
 });
