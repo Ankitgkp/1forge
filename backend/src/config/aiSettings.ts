@@ -1,5 +1,8 @@
+import 'dotenv/config';
+
+const configuredModel = process.env.AI_MODEL || 'xiaomi/mimo-v2-flash:free';
 
 export const aiSettings = {
-    aiName: 'Trinity',
-    model: 'arcee-ai/trinity-large-preview:free'
+    aiName: process.env.AI_NAME || 'OpenRouter',
+    model: configuredModel
 };
