@@ -22,6 +22,11 @@ export function useLLMChat(setSteps: React.Dispatch<React.SetStateAction<Step[]>
             body: JSON.stringify({ messages, model }),
         });
 
+        if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(`Chat request failed (${response.status}): ${errorBody || response.statusText}`);
+        }
+
         if (!response.body) throw new Error("No response body");
 
         const reader = response.body.getReader();

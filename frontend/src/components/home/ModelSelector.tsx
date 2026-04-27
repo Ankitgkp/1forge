@@ -9,6 +9,7 @@ interface ModelSelectorProps {
 
 export function ModelSelector({ model, setModel }: ModelSelectorProps) {
     const models = [
+        { id: 'inclusionai/ling-2.6-1t:free', name: 'Ling 2.6 1T' },
         { id: 'arcee-ai/trinity-large-preview:free', name: 'Trinity' },
     ];
 
