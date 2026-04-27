@@ -36,8 +36,25 @@ export function useBuilderInit({ prompt, setSteps, initializeChat, model }: UseB
 
                 await initializeChat(prompts, prompt);
             } catch (error) {
-                console.error("Error during initialization:", error);
-                alert("Failed to generate content. Please try again.");
+                if (axios.isAxiosError(error)) {
+                    const apiData = error.response?.data as { message?: string; error?: string; hint?: string } | undefined;
+                    const status = error.response?.status;
+                    const details = apiData?.error || apiData?.message || error.message;
+                    const hint = apiData?.hint ? `\n${apiData.hint}` : "";
+
+                    console.error("Error during initialization:", {
+                        status,
+                        details,
+                        apiData,
+                    });
+
+                    alert(`Initialization failed${status ? ` (${status})` : ""}: ${details}${hint}`);
+                    return;
+                }
+
+                const message = error instanceof Error ? error.message : "Unknown error";
+                console.error("Error during initialization:", message);
+                alert(`Failed to generate content: ${message}`);
             }
         }
 
