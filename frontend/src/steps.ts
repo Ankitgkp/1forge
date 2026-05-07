@@ -37,7 +37,6 @@ export function parseXml(response: string): Step[] {
     const [, type, filePath, content] = match;
 
     if (type === 'file') {
-      // Fix common AI code generation issues (like // comments in JSX)
       const fixedCode = fixGeneratedCode(content.trim(), filePath);
       
       steps.push({

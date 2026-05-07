@@ -9,8 +9,9 @@ interface ModelSelectorProps {
 
 export function ModelSelector({ model, setModel }: ModelSelectorProps) {
     const models = [
-        { id: 'inclusionai/ling-2.6-1t:free', name: 'Ling 2.6 1T' },
-        { id: 'arcee-ai/trinity-large-preview:free', name: 'Trinity' },
+        { id: 'tencent/hy3-preview:free', name: 'Tencent HY3 Preview' },
+        { id: 'anthropic/claude-3.5-sonnet', name: 'Claude' },
+        { id: 'openai/gpt-4o-mini', name: 'GPT' },
     ];
 
     const selectedModelName = models.find(m => m.id === model)?.name || model;
@@ -38,8 +39,6 @@ export function ModelSelector({ model, setModel }: ModelSelectorProps) {
                     </div>
                 </DropdownItem>
             ))}
-            <DropdownItem disabled badge="Soon">Claude</DropdownItem>
-            <DropdownItem disabled badge="Soon">Gemini</DropdownItem>
         </Dropdown>
     );
 }
