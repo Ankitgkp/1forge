@@ -9,9 +9,9 @@ interface ModelSelectorProps {
 
 export function ModelSelector({ model, setModel }: ModelSelectorProps) {
     const models = [
-        { id: 'tencent/hy3-preview:free', name: 'Tencent HY3 Preview' },
-        { id: 'anthropic/claude-3.5-sonnet', name: 'Claude' },
-        { id: 'openai/gpt-4o-mini', name: 'GPT' },
+        { id: 'z-ai/glm-4.5-air:free', name: 'GLM 4.5 Air' },
+        { id: 'anthropic/claude-3.5-sonnet', name: 'Claude', disabled: true },
+        { id: 'openai/gpt-4o-mini', name: 'GPT', disabled: true },
     ];
 
     const selectedModelName = models.find(m => m.id === model)?.name || model;
@@ -29,10 +29,17 @@ export function ModelSelector({ model, setModel }: ModelSelectorProps) {
     return (
         <Dropdown trigger={trigger}>
             {models.map(m => (
-                <DropdownItem 
+                <DropdownItem
                     key={m.id}
-                    onClick={() => setModel(m.id)}
-                    className={model === m.id ? 'bg-white/[0.06] text-white/80' : ''}
+                    onClick={m.disabled ? undefined : () => setModel(m.id)}
+                    disabled={m.disabled}
+                    className={
+                        m.disabled
+                            ? 'opacity-40 blur-[1px] cursor-not-allowed'
+                            : model === m.id
+                              ? 'bg-white/[0.06] text-white/80'
+                              : ''
+                    }
                 >
                     <div className="flex items-center justify-between w-full">
                         <span>{m.name}</span>
