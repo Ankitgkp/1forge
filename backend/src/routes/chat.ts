@@ -22,6 +22,13 @@ const setStreamHeaders = (res: Response) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
 };
 
+const FALLBACK_MODELS = [
+    'baidu/cobuddy:free',
+    'inclusionai/ring-2.6-1t:free',
+    'poolside/laguna-xs.2:free',
+    'tencent/hy3-preview:free'
+];
+
 router.post("/", async (req: Request, res: Response) => {
     try {
         const messages = req.body.messages;
@@ -32,24 +39,59 @@ router.post("/", async (req: Request, res: Response) => {
             return;
         }
 
-        const stream = await openrouter.chat.send({
-            model: req.body.model || config.aiModel,
-            messages: [
-                { role: "system", content: getSystemPrompt() },
-                ...formatMessages(messages)
-            ],
-            stream: true,
-            streamOptions: { includeUsage: true }
-        });
+        const requestedModel = req.body.model || config.aiModel;
+        const modelsToTry = [
+            requestedModel,
+            ...FALLBACK_MODELS.filter((m) => m !== requestedModel)
+        ];
 
-        setStreamHeaders(res);
+        let hasContent = false;
+        let headersSet = false;
 
-        for await (const chunk of stream) {
-            const content = chunk.choices[0]?.delta?.content;
-            if (content) {
-                res.write(content);
-                // @ts-ignore
-                if (res.flush) res.flush();
+        const ensureHeaders = () => {
+            if (!headersSet) {
+                setStreamHeaders(res);
+                headersSet = true;
+            }
+        };
+
+        for (const model of modelsToTry) {
+            try {
+                const stream = await openrouter.chat.send({
+                    model,
+                    messages: [
+                        { role: "system", content: getSystemPrompt() },
+                        ...formatMessages(messages)
+                    ],
+                    stream: true,
+                    streamOptions: { includeUsage: true }
+                });
+
+                for await (const chunk of stream) {
+                    const content = chunk.choices[0]?.delta?.content;
+                    if (content) {
+                        ensureHeaders();
+                        hasContent = true;
+                        res.write(content);
+                        // @ts-ignore
+                        if (res.flush) res.flush();
+                    }
+                }
+
+                if (hasContent) break;
+            } catch (error) {
+                console.error(`Error in /chat with model ${model}:`, error);
+                if (hasContent) break;
+            }
+        }
+
+        if (!hasContent) {
+            if (!headersSet) {
+                res.status(502).json({
+                    message: "No response from any model",
+                    modelsTried: modelsToTry
+                });
+                return;
             }
         }
 
