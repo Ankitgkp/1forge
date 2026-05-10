@@ -10,10 +10,7 @@ interface ModelSelectorProps {
 export function ModelSelector({ model, setModel }: ModelSelectorProps) {
     const models = [
         { id: 'openrouter/owl-alpha', name: 'Owl Alpha' },
-        { id: 'baidu/cobuddy:free', name: 'Baidu CoBuddy' },
-        { id: 'inclusionai/ring-2.6-1t:free', name: 'Ring 2.6 1T' },
-        { id: 'poolside/laguna-xs.2:free', name: 'Laguna XS.2' },
-        { id: 'tencent/hy3-preview:free', name: 'Tencent HY3' },
+        { id: 'nvidia/nemotron-3-super-120b-a12b:free', name: 'Nemotron 3 Super 120B A12B' },
         { id: 'anthropic/claude-3.5-sonnet', name: 'Claude', disabled: true },
         { id: 'openai/gpt-4o-mini', name: 'GPT', disabled: true },
     ];
