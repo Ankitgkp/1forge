@@ -23,10 +23,7 @@ const setStreamHeaders = (res: Response) => {
 };
 
 const FALLBACK_MODELS = [
-    'baidu/cobuddy:free',
-    'inclusionai/ring-2.6-1t:free',
-    'poolside/laguna-xs.2:free',
-    'tencent/hy3-preview:free'
+    'nvidia/nemotron-3-super-120b-a12b:free'
 ];
 
 router.post("/", async (req: Request, res: Response) => {
