@@ -14,6 +14,7 @@ interface ChatMessage {
 export function useLLMChat(setSteps: React.Dispatch<React.SetStateAction<Step[]>>, model?: string) {
     const [llmMessages, setLlmMessages] = useState<ChatMessage[]>([]);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     async function streamResponse(messages: ChatMessage[]): Promise<string> {
         const response = await fetch(`${BACKEND_URL}/chat`, {
@@ -60,11 +61,15 @@ export function useLLMChat(setSteps: React.Dispatch<React.SetStateAction<Step[]>
         const newMessage: ChatMessage = { role: "user", content: userPrompt };
 
         setLoading(true);
+        setError(null);
         setLlmMessages((x) => [...x, newMessage]);
 
         try {
             const fullResponse = await streamResponse([...llmMessages, newMessage]);
             setLlmMessages((x) => [...x, { role: "assistant", content: fullResponse }]);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : "Failed to get response from AI";
+            setError(message);
         } finally {
             setLoading(false);
         }
@@ -75,14 +80,22 @@ export function useLLMChat(setSteps: React.Dispatch<React.SetStateAction<Step[]>
         messages.push({ role: "user", content: userPrompt });
 
         setLoading(true);
+        setError(null);
 
         try {
             const fullResponse = await streamResponse(messages);
             setLlmMessages([...messages, { role: "assistant", content: fullResponse }]);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : "Failed to initialize AI chat";
+            setError(message);
         } finally {
             setLoading(false);
         }
     }
 
-    return { loading, setLoading, sendMessage, initializeChat };
+    function clearError() {
+        setError(null);
+    }
+
+    return { loading, error, clearError, setLoading, sendMessage, initializeChat };
 }

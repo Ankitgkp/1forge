@@ -20,7 +20,8 @@ import {
     SidebarContent, 
     MainPanel, 
     CodePanel, 
-    PreviewPanel 
+    PreviewPanel,
+    BuilderLoadingOverlay 
 } from "../components/builder";
 
 export function Builder() {
@@ -36,13 +37,18 @@ export function Builder() {
 
     const webcontainer = useWebContainer();
     const { files, selectedFile, setSelectedFile } = useFileManager(steps, setSteps);
-    const { loading, sendMessage, initializeChat } = useLLMChat(setSteps, model);
-    const { templateSet } = useBuilderInit({ prompt, setSteps, initializeChat, model });
+    const { loading, error: chatError, clearError, sendMessage, initializeChat } = useLLMChat(setSteps, model);
+    const { templateSet, initError, retry } = useBuilderInit({ prompt, setSteps, initializeChat, model });
 
     useWebContainerMount(files, webcontainer);
 
     const isGenerating = loading || !templateSet;
     const allStepsCompleted = steps.length > 0 && steps.every(step => step.status === 'completed');
+
+    // Combined error from either init or chat
+    const displayError = initError || chatError;
+    // Show overlay when: still initializing (no files yet and loading) OR there's an error with no files
+    const showOverlay = (isGenerating && files.length === 0) || (displayError !== null && files.length === 0);
 
     useEffect(() => {
         if (!prompt) {
@@ -66,6 +72,15 @@ export function Builder() {
     async function handleChatSubmit() {
         await sendMessage(userPrompt);
         setUserPrompt("");
+    }
+
+    function handleRetry() {
+        clearError();
+        retry();
+    }
+
+    function handleGoBack() {
+        navigate("/");
     }
 
     return (
@@ -99,15 +114,23 @@ export function Builder() {
                     </SidebarPanel>
 
                     <MainPanel>
-                        {activeTab === "code" ? (
-                            <CodePanel
-                                files={files}
-                                selectedFile={selectedFile}
-                                onFileSelect={setSelectedFile}
+                        <div className="relative flex-1 flex overflow-hidden">
+                            {activeTab === "code" ? (
+                                <CodePanel
+                                    files={files}
+                                    selectedFile={selectedFile}
+                                    onFileSelect={setSelectedFile}
+                                />
+                            ) : (
+                                <PreviewPanel webContainer={webcontainer} files={files} isGenerating={isGenerating} />
+                            )}
+                            <BuilderLoadingOverlay
+                                isLoading={showOverlay && !displayError}
+                                error={showOverlay ? displayError : null}
+                                onRetry={handleRetry}
+                                onGoBack={handleGoBack}
                             />
-                        ) : (
-                            <PreviewPanel webContainer={webcontainer} files={files} isGenerating={isGenerating} />
-                        )}
+                        </div>
                     </MainPanel>
                 </div>
             </div>
