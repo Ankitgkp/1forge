@@ -4,3 +4,4 @@ export { SidebarPanel, SidebarContent } from './SidebarPanel';
 export { MainPanel } from './MainPanel';
 export { CodePanel } from './CodePanel';
 export { PreviewPanel } from './PreviewPanel';
+export { BuilderLoadingOverlay } from './BuilderLoadingOverlay';
