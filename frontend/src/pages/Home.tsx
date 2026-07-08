@@ -7,7 +7,7 @@ import { Navbar } from "../components/layout";
 import { PromptInput, GitHubImport } from "../components/home";
 import { BACKEND_URL } from "../config";
 
-const DEFAULT_MODEL = "tencent/hy3:free";
+const DEFAULT_MODEL = "cohere/north-mini-code:free";
 const EXAMPLES = [
   {
     title: "Build appointment booking website",
@@ -34,7 +34,7 @@ const EXAMPLES = [
 export function Home() {
   const [prompt, setPrompt] = useState("");
   const [model, setModel] = useState(DEFAULT_MODEL);
-  const [aiName, setAiName] = useState("Tencent HY3");
+  const [aiName, setAiName] = useState("North Mini Code");
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -8,8 +8,8 @@ interface ModelSelectorProps {
 }
 
 export function ModelSelector({ model, setModel }: ModelSelectorProps) {
-    const modelId = 'tencent/hy3:free';
-    const modelName = 'Tencent HY3';
+    const modelId = 'cohere/north-mini-code:free';
+    const modelName = 'North Mini Code';
 
     useEffect(() => {
         if (model !== modelId) {
