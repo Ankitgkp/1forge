@@ -22,10 +22,6 @@ const setStreamHeaders = (res: Response) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
 };
 
-const FALLBACK_MODELS = [
-    'nvidia/nemotron-3-super-120b-a12b:free'
-];
-
 router.post("/", async (req: Request, res: Response) => {
     try {
         const messages = req.body.messages;
@@ -37,10 +33,7 @@ router.post("/", async (req: Request, res: Response) => {
         }
 
         const requestedModel = req.body.model || config.aiModel;
-        const modelsToTry = [
-            requestedModel,
-            ...FALLBACK_MODELS.filter((m) => m !== requestedModel)
-        ];
+        const modelsToTry = [requestedModel];
 
         let hasContent = false;
         let headersSet = false;
