@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { WebContainer } from '@webcontainer/api';
 import { FileItem } from '../types';
+import { fixGeneratedCode } from '../utils/codeFixers';
 
 export function useWebContainerMount(files: FileItem[], webcontainer?: WebContainer) {
     useEffect(() => {
@@ -26,10 +27,12 @@ function createMountStructure(files: FileItem[]): Record<string, any> {
                     : {},
             };
         } else if (file.type === "file") {
+            const contents = fixGeneratedCode(file.content || "", file.path);
+
             if (isRootFolder) {
-                mountStructure[file.name] = { file: { contents: file.content || "" } };
+                mountStructure[file.name] = { file: { contents } };
             } else {
-                return { file: { contents: file.content || "" } };
+                return { file: { contents } };
             }
         }
         return mountStructure[file.name];
