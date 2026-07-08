@@ -128,6 +128,11 @@ export function fixJsxIssues(code: string): string {
   
   // Fix cases where there's a semicolon after closing tag before another tag
   fixed = fixed.replace(/(<\/[a-zA-Z][a-zA-Z0-9]*>);(\s*<[a-zA-Z])/g, '$1$2');
+
+  // Repair a common generation mistake where an interactive element gets a
+  // duplicate adjacent closing tag, e.g. </button></button>. Nested buttons are
+  // invalid HTML, so keeping the first close is the least destructive fix.
+  fixed = fixed.replace(/(<\/(?:button|a)>)\s*<\/(?:button|a)>/gi, '$1');
   
   return fixed;
 }
