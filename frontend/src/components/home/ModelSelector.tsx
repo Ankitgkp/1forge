@@ -1,6 +1,6 @@
-// ai model selector dropdown 
+// Single-model display for the configured AI provider.
 
-import { Dropdown, DropdownItem } from '../ui';
+import { useEffect } from 'react';
 
 interface ModelSelectorProps {
     model: string;
@@ -8,45 +8,23 @@ interface ModelSelectorProps {
 }
 
 export function ModelSelector({ model, setModel }: ModelSelectorProps) {
-    const models = [
-        { id: 'openrouter/owl-alpha', name: 'Owl Alpha' },
-        { id: 'nvidia/nemotron-3-super-120b-a12b:free', name: 'Nemotron 3 Super 120B A12B' },
-        { id: 'anthropic/claude-3.5-sonnet', name: 'Claude', disabled: true },
-        { id: 'openai/gpt-4o-mini', name: 'GPT', disabled: true },
-    ];
+    const modelId = 'tencent/hy3:free';
+    const modelName = 'Tencent HY3';
 
-    const selectedModelName = models.find(m => m.id === model)?.name || model;
-
-    const trigger = (
-        <button
-            type="button"
-            className="inline-flex items-center gap-2 px-3 py-1.5 text-[13px] text-white/50 bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.06] hover:border-white/[0.1] rounded-lg transition-all duration-200"
-        >
-            <span>{selectedModelName}</span>
-            <span className="text-[9px] opacity-50">▼</span>
-        </button>
-    );
+    useEffect(() => {
+        if (model !== modelId) {
+            setModel(modelId);
+        }
+    }, [model, setModel]);
 
     return (
-        <Dropdown trigger={trigger}>
-            {models.map(m => (
-                <DropdownItem
-                    key={m.id}
-                    onClick={m.disabled ? undefined : () => setModel(m.id)}
-                    disabled={m.disabled}
-                    className={
-                        m.disabled
-                            ? 'opacity-40 blur-[1px] cursor-not-allowed'
-                            : model === m.id
-                              ? 'bg-white/[0.06] text-white/80'
-                              : ''
-                    }
-                >
-                    <div className="flex items-center justify-between w-full">
-                        <span>{m.name}</span>
-                    </div>
-                </DropdownItem>
-            ))}
-        </Dropdown>
+        <button
+            type="button"
+            className="hidden h-9 items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-3.5 text-[13px] font-semibold text-white/58 transition-colors hover:border-[#8ce9e1]/28 hover:text-white/78 sm:inline-flex"
+            title={modelId}
+        >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#35d4c7]" />
+            <span>{modelName}</span>
+        </button>
     );
 }

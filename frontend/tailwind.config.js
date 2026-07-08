@@ -6,7 +6,7 @@ export default {
   	extend: {
   		fontFamily: {
   			'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-  			'display': ['Newsreader', 'Georgia', 'serif'],
+			'display': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

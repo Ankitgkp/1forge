@@ -24,12 +24,12 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
   }, [steps.length]);
 
   return (
-    <div className="h-full flex flex-col bg-[#111110]">
-      <div className="px-4 py-4 border-b border-white/[0.06]">
-        <h2 className="text-[13px] font-medium text-white/60">
+    <div className="flex h-full flex-col bg-[#141616]">
+      <div className="border-b border-white/[0.07] px-4 py-4">
+        <h2 className="text-[13px] font-semibold text-white/62">
           Build Steps
         </h2>
-        <p className="text-[11px] text-white/20 mt-1">
+        <p className="mt-1 text-[11px] text-white/26">
           Follow the progress of your build
         </p>
       </div>
@@ -45,23 +45,23 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
             <div
               key={uniqueKey}
               ref={isLastStep ? lastStepRef : null}
-              className={`group relative flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 border ${isCurrent
-                ? 'bg-white/[0.04] border-white/[0.08]'
-                : 'bg-transparent border-transparent hover:border-white/[0.06] hover:bg-white/[0.02]'
+              className={`group relative flex cursor-pointer items-start gap-3 rounded-[8px] border p-3 transition-colors duration-200 ${isCurrent
+                ? 'border-[#35d4c7]/20 bg-[#123c3a]/45'
+                : 'border-transparent bg-transparent hover:border-white/[0.07] hover:bg-white/[0.025]'
                 }`}
               onClick={() => onStepClick(step.id)}
             >
               <div className="flex-shrink-0 mt-0.5">
                 {isCompleted ? (
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-400/70" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#35d4c7]/12">
+                    <CheckCircle className="h-3.5 w-3.5 text-[#35d4c7]/80" />
                   </div>
                 ) : isInProgress ? (
-                  <div className="w-5 h-5 rounded-full bg-white/[0.06] flex items-center justify-center">
-                    <Loader2 className="w-3.5 h-3.5 text-white/40 animate-spin" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/[0.06]">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-white/45" />
                   </div>
                 ) : (
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${isCurrent ? 'bg-white/[0.06]' : 'bg-white/[0.03]'}`}>
+                  <div className={`flex h-5 w-5 items-center justify-center rounded-full ${isCurrent ? 'bg-white/[0.06]' : 'bg-white/[0.03]'}`}>
                     <Circle className={`w-3.5 h-3.5 ${isCurrent ? 'text-white/30' : 'text-white/15'}`} />
                   </div>
                 )}
@@ -73,7 +73,7 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
                     }`}>
                     {step.title}
                   </h3>
-                  <span className="text-[10px] text-white/20 font-mono px-1.5 py-0.5 rounded bg-white/[0.03]">
+                  <span className="rounded-[6px] bg-white/[0.035] px-1.5 py-0.5 font-mono text-[10px] text-white/24">
                     {step.type === StepType.CreateFile ? 'File' : 'Shell'}
                   </span>
                 </div>
@@ -84,7 +84,7 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
                   </p>
                 )}
                 {step.path && (
-                  <div className="mt-2 flex items-center gap-1.5 text-[11px] text-white/25 font-mono bg-white/[0.02] px-2 py-1 rounded-lg w-fit">
+                  <div className="mt-2 flex w-fit items-center gap-1.5 rounded-[6px] bg-white/[0.025] px-2 py-1 font-mono text-[11px] text-white/28">
                     {step.type === StepType.CreateFile ? (
                       <FileText className="w-3 h-3" />
                     ) : (
