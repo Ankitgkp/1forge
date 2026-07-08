@@ -19,7 +19,7 @@ export function BuilderLoadingOverlay({
     if (!isLoading && !error) return null;
 
     return (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#141413]/95 backdrop-blur-sm">
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#171919]/95 backdrop-blur-sm">
             {error ? (
                 <ErrorState error={error} onRetry={onRetry} onGoBack={onGoBack} />
             ) : (
@@ -40,7 +40,7 @@ function LoadingState() {
                 <div
                     className="absolute inset-0 rounded-full"
                     style={{
-                        background: 'conic-gradient(from 0deg, transparent 0%, transparent 60%, rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.3) 100%)',
+                        background: 'conic-gradient(from 0deg, transparent 0%, transparent 60%, rgba(53,212,199,0.2) 80%, rgba(53,212,199,0.45) 100%)',
                         animation: 'spin 1.5s linear infinite',
                         maskImage: 'radial-gradient(transparent 58%, black 60%, black 68%, transparent 70%)',
                         WebkitMaskImage: 'radial-gradient(transparent 58%, black 60%, black 68%, transparent 70%)',
@@ -67,7 +67,7 @@ function LoadingState() {
                 {[0, 1, 2].map((i) => (
                     <div
                         key={i}
-                        className="w-1.5 h-1.5 rounded-full bg-white/20"
+                        className="h-1.5 w-1.5 rounded-full bg-[#35d4c7]/45"
                         style={{
                             animation: 'bounce-dot 1.4s ease-in-out infinite',
                             animationDelay: `${i * 0.16}s`,
@@ -103,7 +103,7 @@ function ErrorState({
 }) {
     return (
         <div className="flex flex-col items-center gap-5 max-w-md px-8 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-[8px] border border-red-500/20 bg-red-500/10">
                 <AlertTriangle className="w-7 h-7 text-red-400/70" />
             </div>
 
@@ -120,7 +120,7 @@ function ErrorState({
                 {onGoBack && (
                     <button
                         onClick={onGoBack}
-                        className="px-4 py-2 text-[13px] font-medium text-white/40 hover:text-white/60 rounded-lg border border-white/[0.08] hover:border-white/[0.15] bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-200"
+                        className="rounded-[8px] border border-white/[0.08] bg-white/[0.02] px-4 py-2 text-[13px] font-medium text-white/40 transition-colors duration-200 hover:border-white/[0.15] hover:bg-white/[0.04] hover:text-white/60"
                     >
                         Go Back
                     </button>
@@ -128,7 +128,7 @@ function ErrorState({
                 {onRetry && (
                     <button
                         onClick={onRetry}
-                        className="px-4 py-2 text-[13px] font-medium text-white/80 rounded-lg bg-white/[0.08] hover:bg-white/[0.12] border border-white/[0.1] hover:border-white/[0.2] transition-all duration-200 flex items-center gap-2"
+                        className="flex items-center gap-2 rounded-[8px] border border-[#35d4c7]/20 bg-[#123c3a] px-4 py-2 text-[13px] font-medium text-white/80 transition-colors duration-200 hover:border-[#35d4c7]/35 hover:bg-[#174946]"
                     >
                         <RefreshCw className="w-3.5 h-3.5" />
                         Try Again

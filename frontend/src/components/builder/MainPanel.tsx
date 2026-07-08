@@ -9,7 +9,7 @@ interface MainPanelProps {
 
 export function MainPanel({ children }: MainPanelProps) {
     return (
-        <div className="col-span-4 flex flex-col bg-[#141413] min-h-0">
+        <div className="col-span-4 flex min-h-0 flex-col bg-[#171919]">
             <div className="flex-1 flex overflow-hidden">
                 {children}
             </div>

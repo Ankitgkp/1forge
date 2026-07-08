@@ -1,17 +1,12 @@
-// navbar comp
+// Minimal home navigation.
 
 export function Navbar() {
   return (
-    <nav className="relative z-10 flex items-center justify-between px-8 py-5 max-w-5xl mx-auto w-full">
-      <div className="flex items-center gap-1.5">
-        <span className="text-white/80 font-semibold tracking-tight">
-          <span className="text-2xl font-serif italic">1</span>
-          <span className="text-sm">forge</span>
+    <nav className="fixed inset-x-0 top-0 z-30 px-5 py-5 md:px-8">
+      <div className="mx-auto flex max-w-7xl items-center">
+        <span className="text-[20px] font-semibold tracking-[-0.035em] text-white">
+          1forge
         </span>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <span className="text-[11px] text-white/15 font-medium tracking-wide">v3</span>
       </div>
     </nav>
   );

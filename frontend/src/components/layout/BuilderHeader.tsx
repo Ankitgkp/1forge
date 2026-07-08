@@ -22,25 +22,24 @@ export function BuilderHeader({ subtitle, children, files = [], isGenerating = f
     };
     
     return (
-        <header className="bg-[#111110] border-b border-white/[0.06] px-4 py-2.5 flex flex-shrink-0 items-center justify-between">
+        <header className="flex flex-shrink-0 items-center justify-between border-b border-white/[0.07] bg-[#141616] px-4 py-2.5">
             <div className="flex items-center gap-4">
                 <button 
                     onClick={() => navigate('/')}
-                    className="p-2 text-white/30 hover:text-white/60 hover:bg-white/[0.04] rounded-lg transition-all duration-200"
+                    className="rounded-[8px] p-2 text-white/34 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white/65"
                     title="Back to Home"
                 >
                     <Home className="w-4 h-4" />
                 </button>
                 
                 <div className="flex items-center gap-3">
-                    <span className="text-white/70 font-semibold">
-                        <span className="text-lg font-serif italic">1</span>
-                        <span className="text-sm">forge</span>
+                    <span className="text-[15px] font-semibold tracking-[-0.01em] text-white/76">
+                        1forge
                     </span>
                     {subtitle && (
                         <>
-                            <span className="text-white/10">/</span>
-                            <span className="text-[13px] text-white/30 truncate max-w-[250px]">
+                            <span className="text-white/12">/</span>
+                            <span className="max-w-[250px] truncate text-[13px] text-white/36">
                                 {subtitle}
                             </span>
                         </>
@@ -62,7 +61,7 @@ function DownloadButton({ onClick, disabled }: { onClick: () => void; disabled: 
         <button 
             onClick={onClick}
             disabled={disabled}
-            className="flex items-center gap-2 bg-white/[0.05] hover:bg-white/[0.08] disabled:bg-white/[0.02] disabled:cursor-not-allowed disabled:opacity-40 text-white/70 text-[13px] font-medium px-4 py-1.5 rounded-lg transition-all duration-200 border border-white/[0.06]"
+            className="flex items-center gap-2 rounded-[8px] border border-white/[0.08] bg-white/[0.045] px-4 py-1.5 text-[13px] font-medium text-white/62 transition-colors duration-200 hover:border-[#35d4c7]/25 hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:bg-white/[0.02] disabled:opacity-40"
             title={disabled ? 'Wait for code generation to complete' : 'Download project as ZIP'}
         >
             <Download className="w-3.5 h-3.5" />
@@ -75,7 +74,7 @@ function PublishButton({ disabled }: { disabled: boolean }) {
     return (
         <button 
             disabled={disabled}
-            className="flex items-center gap-2 bg-white/90 hover:bg-white disabled:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 disabled:text-white/30 text-[#111110] text-[13px] font-medium px-4 py-1.5 rounded-lg transition-all duration-200"
+            className="flex items-center gap-2 rounded-[8px] bg-[#35d4c7] px-4 py-1.5 text-[13px] font-semibold text-[#071514] transition-colors duration-200 hover:bg-[#61e2d8] disabled:cursor-not-allowed disabled:bg-white/[0.08] disabled:text-white/30 disabled:opacity-50"
             title="Publishing feature coming soon"
         >
             <Rocket className="w-3.5 h-3.5" />

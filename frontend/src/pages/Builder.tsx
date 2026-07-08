@@ -84,7 +84,7 @@ export function Builder() {
     }
 
     return (
-        <div className="h-screen bg-[#0e0e0d] flex flex-col overflow-hidden bg-noise">
+        <div className="flex h-screen flex-col overflow-hidden bg-[#171919] text-white/90">
             <BuilderHeader subtitle={prompt} files={files} isGenerating={isGenerating}>
                 <TabView activeTab={activeTab} onTabChange={setActiveTab} disabled={isGenerating} />
             </BuilderHeader>

@@ -1,7 +1,7 @@
-// prompt input box form
+// Prompt input box form.
 
 import { FormEvent } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowUp, Globe2, Plus } from "lucide-react";
 import { ModelSelector } from "./ModelSelector";
 
 interface PromptInputProps {
@@ -14,30 +14,41 @@ interface PromptInputProps {
 
 export function PromptInput({ value, onChange, onSubmit, model, onModelChange }: PromptInputProps) {
   return (
-    <div className="w-full bg-white/[0.03] rounded-2xl border border-white/[0.06] hover:border-white/[0.1] transition-all duration-300 shadow-2xl shadow-black/30">
+    <div className="input-glow w-full rounded-[22px] border border-white/[0.14] bg-[#0f1418]/90 p-1.5 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl transition-colors duration-200 hover:border-white/[0.22]">
       <form onSubmit={onSubmit}>
-        <div className="p-5 pb-3">
+        <div className="rounded-[18px] border border-white/[0.08] bg-[#171d22]/96 px-5 pb-3 pt-4 md:px-6 md:pt-5">
           <textarea
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="Describe what you want to build..."
-            className="w-full bg-transparent text-white/80 placeholder-white/20 text-[15px] leading-relaxed outline-none resize-none min-h-[64px]"
-            rows={2}
+            placeholder="Describe your idea..."
+            className="min-h-[92px] w-full resize-none bg-transparent text-[16px] leading-relaxed text-white/82 outline-none placeholder:text-white/34 md:min-h-[108px] md:text-[17px]"
+            rows={3}
           />
-        </div>
 
-        <div className="px-5 pb-4 flex items-center justify-between pt-2">
-          <div className="flex items-center gap-3">
-            <ModelSelector model={model} setModel={onModelChange} />
-            <span className="text-[11px] text-white/15">free</span>
+          <div className="flex items-center justify-between pt-3">
+            <div className="flex min-w-0 items-center gap-2">
+              <button
+                type="button"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.04] text-white/56 transition-colors hover:border-white/[0.22] hover:bg-white/[0.08] hover:text-white"
+                title="Add context"
+              >
+                <Plus className="h-4.5 w-4.5" />
+              </button>
+              <span className="inline-flex h-9 items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.05] px-3.5 text-[13px] font-semibold text-white/72">
+                <Globe2 className="h-4 w-4 text-[#8ce9e1]/80" />
+                Website
+              </span>
+              <ModelSelector model={model} setModel={onModelChange} />
+            </div>
+            <button
+              type="submit"
+              disabled={!value.trim()}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#071514] shadow-[0_12px_30px_rgba(0,0,0,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#8ce9e1] disabled:cursor-not-allowed disabled:bg-white/[0.1] disabled:text-white/32 disabled:shadow-none disabled:hover:translate-y-0"
+              title="Send"
+            >
+              <ArrowUp className="h-4.5 w-4.5" />
+            </button>
           </div>
-          <button
-            type="submit"
-            disabled={!value.trim()}
-            className="flex items-center justify-center w-9 h-9 bg-white/90 hover:bg-white disabled:opacity-20 disabled:cursor-not-allowed text-[#0e0e0d] rounded-xl transition-all duration-200"
-          >
-            <ArrowRight className="w-4 h-4" />
-          </button>
         </div>
       </form>
     </div>
