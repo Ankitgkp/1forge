@@ -10,6 +10,23 @@ import { basePrompt as reactBasePrompt } from "../defaults/react.js";
 
 const router = Router();
 
+const extractTextContent = (content: unknown): string => {
+    if (typeof content === 'string') return content;
+
+    if (Array.isArray(content)) {
+        return content.map(extractTextContent).join('');
+    }
+
+    if (content && typeof content === 'object') {
+        const record = content as Record<string, unknown>;
+
+        if (typeof record.text === 'string') return record.text;
+        if (typeof record.content === 'string') return record.content;
+    }
+
+    return '';
+};
+
 const CLASSIFIER_PROMPT = `You are a project classifier. Your ONLY task is to return either 'node' or 'react'.
 
 - Return 'react' if the project is a web app, UI, frontend, or visual website.
@@ -47,10 +64,10 @@ router.post("/", async (req: Request, res: Response) => {
             ]
         });
 
-        const content = response.choices[0]?.message?.content;
+        const content = extractTextContent(response.choices[0]?.message?.content);
         console.log("Template classification response:", content);
         
-        const answer = (typeof content === 'string' ? content : '').toLowerCase();
+        const answer = content.toLowerCase();
         const isReact = answer.includes("react");
         const basePrompt = isReact ? reactBasePrompt : nodeBasePrompt;
 

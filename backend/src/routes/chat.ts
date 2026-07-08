@@ -7,10 +7,27 @@ import { getSystemPrompt } from "../prompts.js";
 
 const router = Router();
 
+const extractTextContent = (content: unknown): string => {
+    if (typeof content === 'string') return content;
+
+    if (Array.isArray(content)) {
+        return content.map(extractTextContent).join('');
+    }
+
+    if (content && typeof content === 'object') {
+        const record = content as Record<string, unknown>;
+
+        if (typeof record.text === 'string') return record.text;
+        if (typeof record.content === 'string') return record.content;
+    }
+
+    return '';
+};
+
 const formatMessages = (messages: any[]) => {
     return messages.map((msg: any) => ({
         role: msg.role === 'assistant' ? 'assistant' as const : 'user' as const,
-        content: typeof msg.content === 'string' ? msg.content : msg.content[0]?.text || ''
+        content: extractTextContent(msg.content)
     }));
 };
 
@@ -58,7 +75,7 @@ router.post("/", async (req: Request, res: Response) => {
                 });
 
                 for await (const chunk of stream) {
-                    const content = chunk.choices[0]?.delta?.content;
+                    const content = extractTextContent(chunk.choices[0]?.delta?.content);
                     if (content) {
                         ensureHeaders();
                         hasContent = true;
