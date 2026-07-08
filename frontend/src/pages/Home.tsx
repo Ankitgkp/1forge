@@ -10,24 +10,24 @@ import { BACKEND_URL } from "../config";
 const DEFAULT_MODEL = "cohere/north-mini-code:free";
 const EXAMPLES = [
   {
-    title: "Build appointment booking website",
+    title: "Make a todo app",
     prompt:
-      "Build a modern appointment booking website with React and TypeScript. Include service selection, availability calendar, booking form, confirmation screen, admin-style booking list, responsive navigation, clean dark theme, and 2-4 pages.",
+      "Make a simple todo app webpage using React and TypeScript. Include add task, mark complete, delete task, filter by all/active/completed, clean responsive layout, and a polished dark minimalist design.",
   },
   {
-    title: "Build restaurant ordering website",
+    title: "Make a simple weather app",
     prompt:
-      "Build a restaurant ordering website with React and TypeScript. Include menu categories, item detail modal, cart, checkout form, order status page, restaurant info section, responsive layout, polished dark theme, and 2-4 pages.",
+      "Make a simple weather app using React and TypeScript. Include a city search input, current weather card, temperature, condition, humidity, wind speed, small forecast section, responsive layout, and a clean dark design.",
   },
   {
-    title: "Create real estate listing website",
+    title: "Make a minimalist portfolio website",
     prompt:
-      "Create a real estate listing website with React and TypeScript. Include property search filters, listing cards, property detail page, agent contact form, saved homes UI, neighborhood highlights, dark premium styling, and 2-4 pages.",
+      "Make a simple minimalist portfolio website using React and TypeScript. Include hero section, about section, project cards, skills, contact section, responsive layout, and a professional dark minimalist style.",
   },
   {
-    title: "Create SaaS analytics dashboard",
+    title: "Make a landing page",
     prompt:
-      "Create a SaaS analytics dashboard with React and TypeScript. Include KPI cards, charts, activity feed, customer table, billing overview, settings page, responsive sidebar layout, dark professional styling, and 2-4 pages.",
+      "Make a simple landing page using React and TypeScript. Include a strong hero section, feature highlights, call-to-action button, testimonials, footer, responsive layout, and a clean dark visual style.",
   },
 ];
 
